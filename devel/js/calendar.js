@@ -39,36 +39,51 @@ class Calendar extends Component {
                 for (let i = 0; i < calendarData[item].length; i++) {
                     let beginPoint = Math.floor(calendarData[item][i].beginTime / 60);
                     let endPoint = Math.ceil(calendarData[item][i].endTime / 60);
-                    console.log(beginPoint, endPoint);
+                    if ((currentIndex >= beginPoint) && (currentIndex <= endPoint)) {
+                        return (
+                            <div className='calendar__hour choosed'></div>
+                        );
+                    } else {
+                        return (
+                            <div className='calendar__hour'></div>
+                        );
+                    }
                 }
-            }
-          }
-          ischoosed();
 
-            console.log(hourElemsSections);
-            for (let key in hourElemsSections) {
-                daysElems.push(
-                    <div className='calendar__item' key={key}>
-                        <div className='calendar__day'>{key}</div>
-                        <div className='calendar__choose-all'></div>
-                        <div className='calendar__hours' onClick={this.delegateHour}>
-                            {hourElemsSections[key]}
-                        </div>
-                    </div>
-
-                );
             }
-            return (
-                <div className='conten-main'>
-                    <h1 className='heading-main'>Set schedule</h1>
-                    <div className='calendar'>
-                        <div className='calendar__labels'></div>
-                        {daysElems}
-                    </div>
-                </div>
-            );
         }
 
+        for (let key in hourElemsSections) {
+            for (let i = 0; i < 24; i++) {
+                hourElemsSections[key].push(ischoosed(i));
+            };
+
+        }
+
+        console.log(hourElemsSections);
+        for (let key in hourElemsSections) {
+            daysElems.push(
+                <div className='calendar__item' key={key}>
+                    <div className='calendar__day'>{key}</div>
+                    <div className='calendar__choose-all'></div>
+                    <div className='calendar__hours' onClick={this.delegateHour}>
+                        {hourElemsSections[key]}
+                    </div>
+                </div>
+
+            );
+        }
+        return (
+            <div className='conten-main'>
+                <h1 className='heading-main'>Set schedule</h1>
+                <div className='calendar'>
+                    <div className='calendar__labels'></div>
+                    {daysElems}
+                </div>
+            </div>
+        );
     }
 
-    export default connect(state => ({store: state}), dispatch => ({}))(Calendar);
+}
+
+export default connect(state => ({store: state}), dispatch => ({}))(Calendar);

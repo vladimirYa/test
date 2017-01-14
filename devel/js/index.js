@@ -6,50 +6,86 @@ import {Provider} from 'react-redux';
 import Calendar from './calendar';
 import './../less/style.less';
 
+// let initialState = {
+//     mo: [
+//         {
+//             beginTime: 240,
+//             endTime: 779
+//         }
+//     ],
+//     tu: [
+//         {
+//             beginTime: 120,
+//             endTime: 659
+//         }
+//     ],
+//     we: [
+//         {
+//             beginTime: 180,
+//             endTime: 719
+//         }
+//     ],
+//     th: [
+//         {
+//             beginTime: 420,
+//             endTime: 659
+//         }
+//     ],
+//     fr: [
+//         {
+//             beginTime: 480,
+//             endTime: 659
+//         }
+//     ],
+//     sa: [
+//         {
+//             beginTime: 120,
+//             endTime: 779
+//         }
+//     ],
+//     su: [
+//         {
+//             beginTime: 60,
+//             endTime: 659
+//         }
+//     ]
+// };
 let initialState = {
-    mo: [
+    "mo": [
         {
-            beginTime: 240,
-            endTime: 779
+            "beginTime": 240,
+            "endTime": 779
+        },
+        {
+          "beginTime": 840,
+          "endTime": 899
         }
     ],
-    tu: [
+    "tu": [],
+    "we": [],
+    "th": [
         {
-            beginTime: 120,
-            endTime: 659
+            "beginTime": 240,
+            "endTime": 779
+        }, {
+            "beginTime": 1140,
+            "endTime": 1319
         }
     ],
-    we: [
+    "fr": [
         {
-            beginTime: 180,
-            endTime: 719
+            "beginTime": 660,
+            "endTime": 1019
         }
     ],
-    th: [
+    "sa": [
         {
-            beginTime: 420,
-            endTime: 659
+            "beginTime": 0,
+            "endTime": 1439
         }
     ],
-    fr: [
-        {
-            beginTime: 480,
-            endTime: 659
-        }
-    ],
-    sa: [
-        {
-            beginTime: 120,
-            endTime: 779
-        }
-    ],
-    su: [
-        {
-            beginTime: 60,
-            endTime: 659
-        }
-    ]
-};
+    "su": []
+}
 
 function calendar(state = [], action) {
     if (action.type == 'ADD_CALENDAR') {
@@ -64,17 +100,13 @@ function calendar(state = [], action) {
 
 let store = createStore(calendar);
 
-store.subscribe(()=>{
-  console.log('subscribe', store.getState());
+store.subscribe(() => {
+    console.log('subscribe', store.getState());
 });
 
-store.dispatch({
-    type: 'ADD_CALENDAR',
-    payload: initialState
-});
+store.dispatch({type: 'ADD_CALENDAR', payload: initialState});
 
 ReactDOM.render(
-  <Provider store={store}>
+    <Provider store={store}>
     <Calendar/>
-  </Provider>,
-    document.getElementById('root'));
+</Provider>, document.getElementById('root'));
