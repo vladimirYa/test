@@ -71,34 +71,28 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var initialState = {
-	    mo: [{
-	        beginTime: 240,
-	        endTime: 779
+	    "mo": [{
+	        "beginTime": 240,
+	        "endTime": 779
 	    }],
-	    tu: [{
-	        beginTime: 120,
-	        endTime: 659
+	    "tu": [],
+	    "we": [],
+	    "th": [{
+	        "beginTime": 240,
+	        "endTime": 779
+	    }, {
+	        "beginTime": 1140,
+	        "endTime": 1319
 	    }],
-	    we: [{
-	        beginTime: 180,
-	        endTime: 719
+	    "fr": [{
+	        "beginTime": 660,
+	        "endTime": 1019
 	    }],
-	    th: [{
-	        beginTime: 420,
-	        endTime: 659
+	    "sa": [{
+	        "beginTime": 0,
+	        "endTime": 1439
 	    }],
-	    fr: [{
-	        beginTime: 480,
-	        endTime: 659
-	    }],
-	    sa: [{
-	        beginTime: 120,
-	        endTime: 779
-	    }],
-	    su: [{
-	        beginTime: 60,
-	        endTime: 659
-	    }]
+	    "su": []
 	};
 	
 	function calendar() {
@@ -24719,6 +24713,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var MINUTES_IN_HOUR = 60;
+	var HOURS_IN_DAY = 24;
+	
 	var Calendar = function (_Component) {
 	    (0, _inherits3.default)(Calendar, _Component);
 	
@@ -24756,44 +24753,100 @@
 	        key: 'render',
 	        value: function render() {
 	            var calendarData = this.props.store[0];
-	            var daysElems = [];
-	            var numberOfhours = 24;
-	            var hourElemsSections = {};
+	            // let daysElems = [];
+	            // let numberOfhours = 24;
+	            // let hourElemsSections = {};
 	
-	            for (var key in calendarData) {
-	                hourElemsSections[key] = [];
-	            }
-	            function ischoosed(currentIndex) {
-	                var resultArr = [];
-	                var startPoint = 0;
-	                for (var item in calendarData) {
-	                    for (var i = 0; i < calendarData[item].length; i++) {
-	                        var beginPoint = Math.floor(calendarData[item][i].beginTime / 60);
-	                        var endPoint = Math.ceil(calendarData[item][i].endTime / 60);
-	                        console.log(beginPoint, endPoint);
+	            // for (let key in calendarData) {
+	            //     hourElemsSections[key] = [];
+	            // }
+	            // function ischoosed(currentIndex) {
+	            //     let resultArr = [];
+	            //     let startPoint = 0;
+	            //     for (let item in calendarData) {
+	            //         for (let i = 0; i < calendarData[item].length; i++) {
+	            //             let beginPoint = Math.floor(calendarData[item][i].beginTime / 60);
+	            //             let endPoint = Math.ceil(calendarData[item][i].endTime / 60);
+	            //             console.log(beginPoint, endPoint);
+	            //         }
+	            //     }
+	            //   }
+	            //   ischoosed();
+	
+	            // console.log(hourElemsSections);
+	            // for (let key in hourElemsSections) {
+	            //     daysElems.push(
+	            //         <div className='calendar__item' key={key}>
+	            //             <div className='calendar__day'>{key}</div>
+	            //             <div className='calendar__choose-all'></div>
+	            //             <div className='calendar__hours' onClick={this.delegateHour}>
+	            //                 {hourElemsSections[key]}
+	            //             </div>
+	            //         </div>
+	
+	            //     );
+	            // }
+	
+	            var results = [];
+	
+	            var _loop = function _loop(day) {
+	                var dayData = calendarData[day];
+	                var indexes = [];
+	
+	                dayData.forEach(function (interval, index) {
+	
+	                    var beginTime = interval['beginTime'];
+	                    var endTime = interval['endTime'];
+	
+	                    // console.log(interval, beginTime, endTime, 'wtf')
+	
+	                    var intervalLength = Math.round((endTime - beginTime) / MINUTES_IN_HOUR);
+	                    var intervalStart = beginTime / MINUTES_IN_HOUR;
+	
+	                    // console.log(intervalLength, intervalStart)
+	
+	                    for (var i = 0; i < intervalLength; ++i) {
+	                        indexes.push(intervalStart + i);
 	                    }
-	                }
-	            }
-	            ischoosed();
+	                });
 	
-	            console.log(hourElemsSections);
-	            for (var _key in hourElemsSections) {
+	                results.push(indexes);
+	            };
+	
+	            for (var day in calendarData) {
+	                _loop(day);
+	            }
+	
+	            var daysElems = [];
+	
+	            results.forEach(function (indexes, index) {
 	                daysElems.push(_react2.default.createElement(
 	                    'div',
-	                    { className: 'calendar__item', key: _key },
+	                    { className: 'calendar__item', key: index },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'calendar__day' },
-	                        _key
+	                        index
 	                    ),
 	                    _react2.default.createElement('div', { className: 'calendar__choose-all' }),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'calendar__hours', onClick: this.delegateHour },
-	                        hourElemsSections[_key]
+	                        { className: 'calendar__hours' },
+	                        renderHours(indexes)
 	                    )
 	                ));
+	            });
+	
+	            function renderHours(indexes) {
+	                var hours = [];
+	                for (var i = 0; i < HOURS_IN_DAY; ++i) {
+	
+	                    hours.push(_react2.default.createElement('div', { className: 'calendar__hour ' + (indexes.indexOf(i) >= 0 ? 'choosed' : '') }));
+	                }
+	
+	                return hours;
 	            }
+	
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'conten-main' },
@@ -25680,7 +25733,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background-color: #86ebdb;\n  font-family: Arial;\n  min-height: 100%;\n  margin: 0;\n}\n.heading-main {\n  color: #006a8b;\n  font-weight: 500;\n}\n.conten-main {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  border: 1px solid transparent;\n}\n.calendar {\n  background-color: #fff;\n  display: inline-block;\n}\n.calendar__item {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: stretch;\n  border-bottom: 1px solid rgba(166, 166, 166, 0.2);\n}\n.calendar__day {\n  width: 60px;\n  line-height: 60px;\n  text-align: center;\n  color: #e2f9f1;\n  background-color: #067580;\n  font-size: 25px;\n  text-transform: uppercase;\n}\n.calendar__choose-all {\n  width: 60px;\n  background-color: #22c5db;\n}\n.calendar__hours {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: stretch;\n}\n.calendar__hours .calendar__hour {\n  cursor: pointer;\n  width: 30px;\n  border-left: 1px solid rgba(166, 166, 166, 0.2);\n}\ndiv.calendar__hours .calendar__hour.choosed {\n  background-color: #59bdf5;\n}\n.calendar__hours .calendar__hour:hover {\n  background-color: rgba(166, 166, 166, 0.2);\n}\n", ""]);
+	exports.push([module.id, "body {\n  background-color: #86ebdb;\n  font-family: Arial;\n  min-height: 100%;\n  margin: 0;\n}\n.heading-main {\n  color: #006a8b;\n  font-weight: 500;\n}\n.conten-main {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  border: 1px solid transparent;\n}\n.calendar {\n  background-color: #fff;\n  display: inline-block;\n}\n.calendar__item {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: stretch;\n  border-bottom: 1px solid rgba(166, 166, 166, 0.2);\n}\n.calendar__day {\n  width: 60px;\n  line-height: 60px;\n  text-align: center;\n  color: #e2f9f1;\n  background-color: #067580;\n  font-size: 25px;\n  text-transform: uppercase;\n}\n.calendar__choose-all {\n  width: 60px;\n  background-color: #22c5db;\n}\n.calendar__hours {\n  background-color: #eee;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-start;\n  align-items: stretch;\n}\n.calendar__hours .calendar__hour {\n  cursor: pointer;\n  width: 30px;\n  border-left: 1px solid rgba(166, 166, 166, 0.2);\n}\ndiv.calendar__hours .calendar__hour.choosed {\n  background-color: #59bdf5;\n}\n.calendar__hours .calendar__hour:hover {\n  background-color: rgba(166, 166, 166, 0.2);\n}\n", ""]);
 	
 	// exports
 
