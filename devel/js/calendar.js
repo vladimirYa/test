@@ -39,11 +39,25 @@ class Calendar extends Component {
                 for (let i = 0; i < calendarData[item].length; i++) {
                     let beginPoint = Math.floor(calendarData[item][i].beginTime / 60);
                     let endPoint = Math.ceil(calendarData[item][i].endTime / 60);
-                    console.log(beginPoint, endPoint);
+                    if(currentIndex == beginPoint){
+                      return(<div className='calendar__hour choosed'></div>);
+                    }else{
+                      return(<div className='calendar__hour'></div>);
+                    }
                 }
+
             }
+            console.log(resultArr);
+            return resultArr;
           }
-          ischoosed();
+
+            for (let key in hourElemsSections){
+              for(let i = 0;i<24;i++){
+              hourElemsSections[key].push(ischoosed(i));
+
+            }
+
+          }
 
             console.log(hourElemsSections);
             for (let key in hourElemsSections) {
