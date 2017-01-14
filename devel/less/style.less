@@ -1,0 +1,73 @@
+// variables //
+
+@border-color: rgba(166,166,166,0.2);
+
+// mixins //
+
+.flex-row-align(){
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+// main //
+
+body {
+    background-color: rgb(134, 235, 219);
+    font-family: Arial;
+    min-height: 100%;
+    margin: 0;
+}
+.heading-main{
+  color: rgb(0, 106, 139);
+  font-weight: 500;
+}
+.conten-main{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  // fix for embedded elem with margin-top
+  border: 1px solid transparent;
+
+}
+
+// calendar block //
+
+.calendar{
+  background-color: #fff;
+  display: inline-block;
+  &__item{
+    .flex-row-align();
+   border-bottom: 1px solid @border-color;
+  }
+  &__day{
+    width:60px;
+    line-height: 60px;
+    text-align: center;
+    color: rgb(226, 249, 241);
+    background-color: rgb(6, 117, 128);
+    font-size: 25px;
+    text-transform: uppercase;
+  }
+  &__choose-all{
+    width: 60px;
+    background-color:rgb(34, 197, 219);
+  }
+  &__hours{
+    .flex-row-align();
+    .calendar__hour{
+      cursor: pointer;
+      width: 30px;
+      border-left: 1px solid @border-color;
+      div&.choosed{
+        background-color: rgb(89, 189, 245);
+      }
+      &:hover{
+        background-color: @border-color;
+      }
+    }
+  }
+}
